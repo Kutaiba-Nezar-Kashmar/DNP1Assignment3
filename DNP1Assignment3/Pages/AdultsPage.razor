@@ -1,0 +1,238 @@
+﻿@page "/Adults"
+@using DNP1Assignment3.Data
+@using DNP1Assignment3.Models
+@inject IAdultData AdultData
+@inject NavigationManager NavigationManager
+
+<div class="aduPage">
+    <div class="searchBox">
+        <p class="search">Search:</p>
+        <input class="searchInput" type="text" placeholder="Name" @oninput="((arg) => FilterByPersonName(arg))"/>
+        <input class="searchInput" type="text" placeholder="Gender" @oninput="((arg) => FilterByGender(arg))"/>
+        <input class="searchInput" type="number" placeholder="Age" @oninput="((arg) => FilterByAge(arg))"/>
+        <input class="searchInput" type="text" placeholder="Eye color" @oninput="((arg) => FilterByEyeColor(arg))"/>
+        <input class="searchInput" type="text" placeholder="Hair color" @oninput="((arg) => FilterByHairColor(arg))"/>
+    </div>
+    @if (adultsToShow == null)
+    {
+        <p>
+            <em>Loading</em>
+        </p>
+    }
+    else if (!adultsToShow.Any())
+    {
+        <p>
+            <em style="color: white">No people to show. Please add som.</em>
+        </p>
+    }
+    else
+    {
+        <br/>
+        <div class="TableBox">
+            <table class="table">
+                <thead>
+                <tr>
+                    <AuthorizeView>
+                        <Authorized>
+                            <th>Person ID</th>
+                        </Authorized>
+                    </AuthorizeView>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Age</th>
+                    <th>Job Title</th>
+                    <th>Salary</th>
+                    <th>Sex</th>
+                    <th>Weight</th>
+                    <th>Height</th>
+                    <th>Hair Color</th>
+                    <th>Eye Color</th>
+                    <AuthorizeView>
+                        <Authorized>
+                            <th>Edit</th>
+                            <th>Remove</th>
+                        </Authorized>
+                    </AuthorizeView>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var adult in adultsToShow)
+                {
+                    <tr>
+                        <AuthorizeView>
+                            <Authorized>
+                                <td>@adult.Id</td>
+                            </Authorized>
+                        </AuthorizeView>
+                        <td>@adult.FirstName</td>
+                        <td>@adult.LastName</td>
+                        <td>@adult.Age</td>
+                        <td>@adult.JobTitle.JobTitle</td>
+                        <td>@adult.JobTitle.Salary</td>
+                        <td>@adult.Sex</td>
+                        <td>@adult.Weight</td>
+                        <td>@adult.Height</td>
+                        <td>@adult.HairColor</td>
+                        <td>@adult.EyeColor</td>
+                        <AuthorizeView>
+                            <Authorized>
+                                <td>
+                                    <button @onclick="@(() => Edit(adult.Id))">
+                                        <i class="oi oi-pencil edit"/>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button @onclick="@(() => RemoveAdult(adult.Id))">
+                                        <i class="oi oi-trash remove"/>
+                                    </button>
+                                </td>
+                            </Authorized>
+                        </AuthorizeView>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@code 
+{
+    private IList<Adult> adultsToShow;
+    private IList<Adult> allAdults;
+
+    private string? filterByName;
+    private string? filterByGender;
+    private string? filterByEyeColor;
+    private string? filterByHairColor;
+    private int? filterbuAge;
+    
+    private string errorMessage;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        allAdults = await AdultData.GetAdults();
+        adultsToShow = allAdults;
+    }
+
+    private void FilterByPersonName(ChangeEventArgs changeEventArgs)
+    {
+        filterByName = null;
+        try
+        {
+            filterByName = changeEventArgs.Value.ToString().ToLower();
+            if (filterByName != null)
+            {
+                adultsToShow = allAdults.Where(a => ((a.FirstName + "" + a.LastName).ToLower()).Contains(filterByName)).ToList();
+            }
+            else
+            {
+                adultsToShow = allAdults;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    private void FilterByGender(ChangeEventArgs changeEventArgs)
+    {
+        filterByGender = null;
+        try
+        {
+            filterByGender = changeEventArgs.Value.ToString().ToLower();
+            if (filterByGender != null)
+            {
+                adultsToShow = allAdults.Where(a => ((a.Sex).ToLower()).Contains(filterByGender)).ToList();
+            }
+            else
+            {
+                adultsToShow = allAdults;
+            }
+        }
+        catch (Exception e)
+        {
+            errorMessage = "Try again";
+        }
+    }
+
+    private void FilterByAge(ChangeEventArgs changeEventArgs)
+    {
+        filterbuAge = null;
+        try
+        {
+            filterbuAge = int.Parse(changeEventArgs.Value.ToString());
+            if (filterbuAge != null)
+            {
+                adultsToShow = allAdults.Where(a => a.Age == int.Parse(changeEventArgs.Value.ToString())).ToList();
+            }
+            else
+            {
+                adultsToShow = allAdults;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    private void FilterByEyeColor(ChangeEventArgs changeEventArgs)
+    {
+        filterByEyeColor = null;
+        try
+        {
+            filterByEyeColor = changeEventArgs.Value.ToString().ToLower();
+            if (filterByEyeColor != null)
+            {
+                adultsToShow = allAdults.Where(a => a.EyeColor.ToLower().Contains(filterByEyeColor)).ToList();
+            }
+            else
+            {
+                adultsToShow = allAdults;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    private void FilterByHairColor(ChangeEventArgs changeEventArgs)
+    {
+        filterByHairColor = null;
+        try
+        {
+            filterByHairColor = changeEventArgs.Value.ToString().ToLower();
+            if (filterByHairColor != null)
+            {
+                adultsToShow = allAdults.Where(a => a.HairColor.ToLower().Contains(filterByHairColor)).ToList();
+            }
+            else
+            {
+                adultsToShow = allAdults;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    private void Edit(int id)
+    {
+        NavigationManager.NavigateTo($"Edit/{id}");
+    }
+
+    private async Task RemoveAdult(int adultId)
+    {
+        Adult adultToRemove = allAdults.First(a => a.Id == adultId);
+        await AdultData.RemoveAdult(adultId);
+        allAdults.Remove(adultToRemove);
+        adultsToShow.Remove(adultToRemove);
+    }
+}

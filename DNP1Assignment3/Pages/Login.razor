@@ -1,0 +1,72 @@
+﻿@layout LoginLayout
+@page "/Login"
+@using DNP1Assignment3.Data
+@using DNP1Assignment3.Authentication
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<AuthorizeView>
+    <NotAuthorized>
+        <div class="LogPageDis">
+            <p class="WelcomeMessage" align="center">Sign in</p>
+            <form class="formDis">
+                <input class="inputField" type="text" placeholder="User name" required="required" @bind-value="userName"/>
+                <input class="inputField" type="password" placeholder="password" required="required" @bind-value="password"/>
+                <p class="errorMessage">@errorMessage</p>
+                <div class="buttonsDis">
+                    <a class="submit" @onclick="PerformLogin">Sign in</a>
+                    <a class="submit" @onclick="ToCreateUserPage">Sign up</a>
+                </div>
+                <p class="guest" align="center"><a href="Adults">Continue as aguest</a></p>
+            </form>
+        </div>
+    </NotAuthorized>
+    <Authorized>
+        <div class="form-group">
+            <button class="submit" type="submit" @onclick="PerformLogout">Log out</button>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+@code 
+{
+    private string userName;
+    private string password;
+    private string errorMessage;
+
+    public async Task PerformLogin()
+    {
+        errorMessage = "";
+        try
+        {
+            await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateLogin(userName, password);
+            NavigationManager.NavigateTo("/Adults");
+            userName = "";
+            password = "";
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+        }
+    }
+
+    public async Task PerformLogout()
+    {
+        errorMessage = "";
+        userName = "";
+        password = "";
+        try
+        {
+            ((CustomAuthenticationStateProvider) AuthenticationStateProvider).Logout();
+        }
+        catch (Exception e)
+        {
+        }
+    }
+    
+    private void ToCreateUserPage()
+    {
+        NavigationManager.NavigateTo("/CreateUser");
+    }
+}

@@ -2,8 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DNP1Assignment3.Authentication;
+using DNP1Assignment3.Data;
+using DNP1Assignment3.Data.Impl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +31,10 @@ namespace DNP1Assignment3
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddScoped<IUserService, UserServiceAsync>();
+            services.AddScoped<IAdultData, AdultDataAsync>();
+            services.AddScoped<IFamilyData, FamilyDataAsync>();
+            services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

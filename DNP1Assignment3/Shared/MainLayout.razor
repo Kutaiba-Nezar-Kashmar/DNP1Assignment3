@@ -1,17 +1,44 @@
+@using DNP1Assignment3.Authentication
 @inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <div class="page">
     <div class="sidebar">
         <NavMenu/>
     </div>
 
+
     <div class="main">
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
+        <AuthorizeView>
+            <NotAuthorized>
+                <div class="top-row px-4 topBar">
+                    <a href="/" target="_self" class="oi oi-account-login"> Login</a>
+                </div>
+            </NotAuthorized>
+            <Authorized>
+                <div class="top-row px-4 topBar">
+                    <a href="" target="_self" class="oi oi-account-logout" @onclick="PerformLogout"> Logout</a>
+                </div>
+            </Authorized>
+        </AuthorizeView>
 
         <div class="content px-4">
             @Body
         </div>
     </div>
 </div>
+
+@code
+{
+    public async Task PerformLogout()
+    {
+        try
+        {
+            ((CustomAuthenticationStateProvider) AuthenticationStateProvider).Logout();
+        }
+        catch (Exception e)
+        {
+        }
+    }
+}

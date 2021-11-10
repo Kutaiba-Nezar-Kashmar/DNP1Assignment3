@@ -1,9 +1,281 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    height:100%;
+    width: 100%;
+    background: #360033;
+    background: -webkit-linear-gradient(to right, #360033, #0b8793);
+    background: linear-gradient(to right, #360033, #0b8793);
+    font-family: 'Ubuntu', sans-serif;
 }
 
+/*My style*/
+/*Create user*/
+.CrePageDis
+{
+    background-color: #FFFFFF;
+    width: 550px;
+    height: 700px;
+    margin: 7em auto;
+    border-radius: 1.5em;
+    box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+}
+.createBox
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 30px;
+}
+.WelcomeMessageCreate
+{
+    display: flex;
+    justify-content: center;
+    color: #8C55AA;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    font-size: 23px;
+    margin-top: 30px;
+}
+#backButton
+{
+    padding-left: 60px;
+    padding-right: 60px;
+}
+/**/
+.labels
+{
+    padding: 15px 20px;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+/*Login*/
+.LogPageDis
+{
+    background-color: #FFFFFF;
+    width: 400px;
+    height: 400px;
+    margin: 7em auto;
+    border-radius: 1.5em;
+    box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+}
+
+.WelcomeMessage
+{
+    padding-top: 40px;
+    color: #8C55AA;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    font-size: 23px;
+}
+.inputField
+{
+    width: 76%;
+    color: rgb(38, 50, 56);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    background: rgba(136, 126, 126, 0.04);
+    padding: 10px 20px;
+    border-radius: 20px;
+    outline: none;
+    box-sizing: border-box;
+    border: 1px solid black;
+    margin-bottom: 50px;
+    margin-left: 46px;
+    text-align: center;
+    margin-bottom: 27px;
+    font-family: 'Ubuntu', sans-serif;
+}
+form.formDis
+{
+    padding-top: 40px;
+}
+
+.userName:focus .password:focus
+{
+    border: 2px solid rgba(0, 0, 0, 0.18) !important;
+}
+
+.submit
+{
+    cursor: pointer;
+    border-radius: 5em;
+    color: #fff;
+    background: linear-gradient(to right, #9C27B0, #E040FB);
+    border: 0;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 13px;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+}
+.guest
+{
+    text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
+    color: #E1BEE7;
+    padding-top: 15px;
+}
+a
+{
+    text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
+    color: #E1BEE7;
+    text-decoration: none
+}
+.buttonsDis
+{
+    display: flex;
+    justify-content: space-around;
+
+}
+
+@media (max-width: 600px)
+{
+    .loginPage
+    {
+        border-radius: 0px;
+    }
+}
+
+.authorizedCreatUser
+{
+    color: white;
+    font-family: 'Ubuntu', sans-serif;
+}
+/**/
+.edit
+{
+    color: green;
+}
+.remove
+{
+    color: red;
+}
+.view
+{
+    color: blue;
+}
+/*Adults*/
+.TableBox
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1.5em;
+    border: solid black 2px;
+    text-align: center;
+    background-color: white;
+}
+.searchBox
+{
+    display: flex;
+    align-items: center;
+    background-color: white;
+    justify-content: space-evenly;
+    background-image: linear-gradient(to right, rgba(30, 75, 115, 1), rgba(255, 255, 255, 0));
+    border-radius: 1.5em;
+}
+
+.searchInput
+{
+    border-radius: 1em;
+    border: solid black 0.5px;
+    text-align: center;
+}
+.searchInput:hover
+{
+    border: solid #E040FB 3px;
+}
+.search
+{
+    color: white;
+    margin-top: 17px;
+}
+.editAdultBox
+{
+    background-color: #FFFFFF;
+    width: 800px;
+    height: auto;
+    margin: 7em auto;
+    border-radius: 1.5em;
+    box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+}
+/**/
+/*Add adult*/
+.warning
+{
+    color: white;
+}
+.warning a
+{
+    color: red;
+}
+.addAdultPage
+{
+    background-color: #FFFFFF;
+    width: 800px;
+    height: 950px;
+    margin: 7em auto;
+    border-radius: 1.5em;
+    box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+}
+.addBox
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 30px;
+}
+/**/
+/*Family*/
+.familyBox
+{
+    background-color: #FFFFFF;
+    width: 800px;
+    height: auto;
+    margin: 7em auto;
+    border-radius: 1.5em;
+    box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+}
+.familyBox
+{
+    background-color: #FFFFFF;
+    width: 800px;
+    height: auto;
+    margin: 7em auto;
+    border-radius: 1.5em;
+    box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+}
+.familyBox
+{
+    background-color: #FFFFFF;
+    width: 800px;
+    height: auto;
+    margin: 7em auto;
+    border-radius: 1.5em;
+    box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+}
+.AddFBu
+{
+    background: linear-gradient(to right, #360033, #0b8793);
+    width: 100%;
+    height: auto;
+    border-radius: 1.5em;
+    box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+}
+.familyBox
+{
+    background-color: #FFFFFF;
+    width: 800px;
+    height: auto;
+    margin: 7em auto;
+    border-radius: 1.5em;
+    box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+}
+/**/
+/**/
 a, .btn-link {
     color: #0366d6;
 }
@@ -42,9 +314,9 @@ a, .btn-link {
     z-index: 1000;
 }
 
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
-    }
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}

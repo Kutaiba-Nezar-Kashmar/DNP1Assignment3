@@ -1,0 +1,163 @@
+﻿@page "/Family"
+@using DNP1Assignment3.Data
+@using DNP1Assignment3.Models
+@inject IFamilyData FamilyData
+@inject NavigationManager NavigationManager
+
+<div class="aduPage">
+    <div class="searchBox">
+        <p class="search">Search:</p>
+        <input class="searchInput" type="text" placeholder="Street Name" @oninput="((arg)=> FilterByStreetName(arg))"/>
+        <input class="searchInput" type="number" placeholder="House Number" min="1" @oninput="((arg)=> FilterByHouseNumber(arg))"/>
+    </div>
+</div>
+
+@if (familiesToShow == null)
+{
+    <p>
+        <em>Loading</em>
+    </p>
+}
+else if (!familiesToShow.Any())
+{
+    <p>
+        <em style="color: white">No Families to show. Please add som.</em>
+    </p>
+}
+else
+{
+  
+    <br/>
+    <div class="TableBox">
+        <table class="table">
+            <thead>
+            <tr>
+                <AuthorizeView>
+                    <Authorized>
+                        <th>Family ID</th>
+                    </Authorized>
+                </AuthorizeView>
+                <th>Street Name</th>
+                <th>House Number</th>
+                <AuthorizeView>
+                    <Authorized>
+                        <th>Edit</th>
+                        <th>Remove</th>
+                    </Authorized>
+                </AuthorizeView>
+                <th>View Family Members</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var family in familiesToShow)
+            {
+                <tr>
+                    <AuthorizeView>
+                        <Authorized>
+                            <td>@family.Id</td>
+                        </Authorized>
+                    </AuthorizeView>
+                    <td>@family.StreetName</td>
+                    <td>@family.HouseNumber</td>
+                    <AuthorizeView>
+                        <Authorized>
+                            <td>
+                                <button @onclick="@(() => Edit(family.Id))">
+                                    <i class="oi oi-pencil edit"/>
+                                </button>
+                            </td>
+                            <td>
+                                <button @onclick="@(() => RemoveFamily(family.Id))">
+                                    <i class="oi oi-trash remove"/>
+                                </button>
+                            </td>
+                        </Authorized>
+                    </AuthorizeView>
+                    <td>
+                        <button @onclick="@(() => ViewFamilyMembers(family.Id))">
+                            <i class="oi oi-arrow-thick-right view"/>
+                        </button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code 
+{
+    private IList<Family> familiesToShow;
+    private IList<Family> allFamilies;
+
+    private int? filterByHouseNumber;
+    private string? filterByStreetName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        allFamilies = await FamilyData.GetFamilies();
+        familiesToShow = allFamilies;
+    }
+
+    private void ViewFamilyMembers(int familyId)
+    {
+        NavigationManager.NavigateTo($"FamilyMembers/{familyId}");
+    }
+    
+    private void Edit(int id)
+    {
+        NavigationManager.NavigateTo($"EditFamily/{id}");
+    }
+
+    private async Task RemoveFamily(int familyId)
+    {
+        Family familyToRemove = allFamilies.First(f => f.Id == familyId);
+        FamilyData.RemoveFamily(familyId);
+        allFamilies.Remove(familyToRemove);
+        familiesToShow.Remove(familyToRemove);
+    }
+
+    private void FilterByHouseNumber(ChangeEventArgs changeEventArgs)
+    {
+        filterByHouseNumber = null;
+        try
+        {
+            filterByHouseNumber = int.Parse(changeEventArgs.Value.ToString());
+            if (filterByHouseNumber != null)
+            {
+                familiesToShow = allFamilies.Where(f => f.HouseNumber == int.Parse(changeEventArgs.Value.ToString())).ToList();
+            }
+            else
+            {
+                familiesToShow = allFamilies;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    private void FilterByStreetName(ChangeEventArgs changeEventArgs)
+    {
+        filterByStreetName = null;
+        try
+        {
+            filterByStreetName = changeEventArgs.Value.ToString().ToLower();
+            if (filterByStreetName != null)
+            {
+                familiesToShow = allFamilies.Where(f => f.StreetName.ToLower().Contains(filterByStreetName)).ToList();
+            }
+            else
+            {
+                familiesToShow = allFamilies;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+}

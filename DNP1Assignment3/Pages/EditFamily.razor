@@ -1,0 +1,185 @@
+﻿@page "/EditFamily/{Id:int}"
+@using DNP1Assignment3.Data
+@using DNP1Assignment3.Models
+@using Microsoft.AspNetCore.Components
+@inject IFamilyData FamilyData 
+@inject NavigationManager NavigationManager
+
+<AuthorizeView>
+    <NotAuthorized Context="Auth">
+        <h3>You have to <a href="Login">login</a> in order to view this page!!!</h3>
+    </NotAuthorized>
+    <Authorized Context="Auth">
+        
+
+        @if (familyToEdit == null)
+        {
+            <em>Family is not found!!!</em>
+        }
+
+        else
+        {
+            <div class="familyBox">
+                <br/>
+                <p class="WelcomeMessageCreate">Update family Info</p>
+                <div class="addBox">
+                    <form class="formDis">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="labels">Family Id:</p>
+                                <p class="labels">House Number</p>
+                                <p class="labels">Street Name</p>
+                            </div>
+                            <div class="col-md-9">
+                                <input class="inputField" type="number" placeholder="ID" @bind-value="familyToEdit.Id"/>
+                                <input class="inputField" type="number" placeholder="House Number" @bind-value="familyToEdit.HouseNumber"/>
+                                <input class="inputField" type="text" placeholder="Street name" @bind-value="familyToEdit.StreetName"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="familyBox">
+                <br/>
+                @if (adults == null)
+                {
+                    <p class="WelcomeMessageCreate">No Adults in this family</p>
+                }
+                else
+                {
+                    <p class="WelcomeMessageCreate">Family Adults</p>
+                }
+                {
+                @foreach (var a in adults)
+                {
+                    <div class="addBox">
+                        <form class="formDis">
+                            <p class="WelcomeMessageCreate">Adult With Id: @a.Id</p>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <br/>
+                                    <p class="labels">First Name:</p>
+                                    <p class="labels">Last Name:</p>
+                                    <p class="labels">Age:</p>
+                                    <p class="labels">Sex:</p>
+                                    <p class="labels">Weight:</p>
+                                    <p class="labels">Height</p>
+                                    <p class="labels">Hair Color:</p>
+                                    <p class="labels">Eye Color:</p>
+                                    <p class="labels">Job Title:</p>
+                                    <p class="labels">Salary</p>
+                                </div>
+                                <div class="col-md-9">
+                                    <input class="inputField" type="text" placeholder="First Name" @bind-value="a.FirstName"/>
+                                    <input class="inputField" type="text" placeholder="Last Name" @bind-value="a.LastName"/>
+                                    <input class="inputField" type="number" placeholder="Age" @bind-value="a.Age"/>
+                                    <input class="inputField" type="text" placeholder="Sex" @bind-value="a.Sex"/>
+                                    <input class="inputField" type="number" placeholder="Weight" @bind-value="a.Weight"/>
+                                    <input class="inputField" type="number" placeholder="Height" @bind-value="a.Height"/>
+                                    <input class="inputField" type="text" placeholder="Hair Color" @bind-value="a.HairColor"/>
+                                    <input class="inputField" type="text" placeholder="Eye Color" @bind-value="a.EyeColor"/>
+                                    <input class="inputField" type="text" placeholder="Job Title" @bind-value="a.JobTitle.JobTitle"/>
+                                    <input class="inputField" type="number" placeholder="Salary" @bind-value="a.JobTitle.Salary"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                }
+            </div>
+            <div class="familyBox">
+                @if (children == null)
+                {
+                    <p class="WelcomeMessageCreate">There Are No Children In This Family</p>
+                }
+                else
+                {
+                    <p class="WelcomeMessageCreate">Family Children</p>
+                }
+                @foreach (var c in children)
+                {
+                    <div class="addBox">
+                        <form class="formDis">
+                            <p class="WelcomeMessageCreate">Child With Id: @c.Id</p>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <p class="labels">First Name:</p>
+                                    <p class="labels">Last Name:</p>
+                                    <p class="labels">Age:</p>
+                                    <p class="labels">Sex:</p>
+                                    <p class="labels">Weight:</p>
+                                    <p class="labels">Height</p>
+                                    <p class="labels">Hair Color:</p>
+                                    <p class="labels">Eye Color:</p>
+                                    @foreach (var i in interests)
+                                    {
+                                        <p class="labels">Type Of Intrests:</p>
+                                        <p class="labels">Description:</p>
+                                    }
+                                    @foreach (var p in pets)
+                                    {
+                                        <p class="labels">Pet Species</p>
+                                        <p class="labels">Pet Name</p>
+                                        <p class="labels">Pet Age</p>
+                                    }
+                                </div>
+                                <div class="col-md-9">
+                                    <input class="inputField" type="text" placeholder="First Name" @bind-value="c.FirstName"/>
+                                    <input class="inputField" type="text" placeholder="Last Name" @bind-value="c.LastName"/>
+                                    <input class="inputField" type="number" placeholder="Age" @bind-value="c.Age"/>
+                                    <input class="inputField" type="text" placeholder="Sex" @bind-value="c.Sex"/>
+                                    <input class="inputField" type="number" placeholder="Weight" @bind-value="c.Weight"/>
+                                    <input class="inputField" type="number" placeholder="Height" @bind-value="c.Height"/>
+                                    <input class="inputField" type="text" placeholder="Hair color" @bind-value="c.HairColor"/>
+                                    <input class="inputField" type="text" placeholder="Eye color" @bind-value="c.EyeColor"/>
+                                    @foreach (var i in interests)
+                                    {
+                                        <input class="inputField" type="text" placeholder="Eye color" @bind-value="i.Type"/>
+                                        <input class="inputField" type="text" placeholder="Eye color" @bind-value="i.Description"/>
+                                    }
+                                    @foreach (var  p in pets)
+                                    {
+                                        <input class="inputField" type="text" placeholder="Description" @bind-value="p.Species"/>
+                                        <input class="inputField" type="text" placeholder="Name" @bind-value="p.Name"/>
+                                        <input class="inputField" type="number" placeholder="Age" @bind-value="p.Age"/>
+                                    }
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                }
+                <div class="d-flex justify-content-center AddFBu">
+                    <a class="submit" type="submit" @onclick="Save">Update Family</a>
+                </div>
+            </div>
+        }
+    </Authorized>
+</AuthorizeView>
+@code 
+{
+    [Parameter]
+    public int Id { get; set; }
+
+    private Family familyToEdit;
+    private IList<Adult> adults;
+    private IList<Child> children;
+    private IList<Interest> interests;
+    private IList<Pet> pets;
+
+    protected override async Task OnInitializedAsync()
+    {
+        familyToEdit = await FamilyData.Get(Id);
+        children = familyToEdit.Children;
+        adults = familyToEdit.Adults;
+    @foreach (var  c in children)
+    {
+        interests = c.Interests;
+        pets = c.Pets;
+    }
+    }
+
+    private async Task Save()
+    {
+        await FamilyData.UpdateFamily(familyToEdit);
+        NavigationManager.NavigateTo("/Family");
+    }
+}

@@ -1,0 +1,68 @@
+﻿@layout LoginLayout
+@page "/CreateUser"
+@using DNP1Assignment3.Data
+@using DNP1Assignment3.Models
+@using Microsoft.AspNetCore.Components
+@using DNP1Assignment3.Authentication
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<AuthorizeView>
+    <NotAuthorized>
+        <div class="CrePageDis">
+            <br/>
+            <p class="WelcomeMessageCreate">Please fill the below fields</p>
+            <div class="createBox">
+                <form class="formDis">
+                    <input class="inputField" type="text" placeholder="First name" @bind-value="newUser.FirstName"/>
+                    <input class="inputField" type="text" placeholder="Last name" @bind-value="newUser.LastName"/>
+                    <input class="inputField" type="email" placeholder="E-mail address" @bind-value="newUser.EmailAddress"/>
+                    <input class="inputField" type="number" placeholder="Age" min="10" max="100" @bind-value="newUser.Age"/>
+                    <input class="inputField" type="text" placeholder="User name" @bind-value="newUser.UserName"/>
+                    <input class="inputField" type="password" placeholder="Password" @bind-value="newUser.Password"/>
+                    <p class="errorMessage">@message</p>
+                    <div class="buttonsDis">
+                        <a class="submit" @onclick="createUser">Create User</a>
+                        <a class="submit" id="backButton" @onclick="BackToLogin">Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </NotAuthorized>
+    <Authorized>
+        <div class="authorizedCreatUser">
+            <p id="authCr">User already in the system. you can <a href="" @onclick="PerformLogout">logout</a> if you wish</p>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+@code 
+{
+    private string message;
+    
+    private User newUser = new User();
+
+    private async Task createUser()
+    {
+        await UserService.CreateUser(newUser);
+        message = "User created. Please login to use the system";
+    }
+
+    private void BackToLogin()
+    {
+        NavigationManager.NavigateTo("/Login");
+    }
+
+    public async Task PerformLogout()
+    {
+        try
+        {
+            ((CustomAuthenticationStateProvider) AuthenticationStateProvider).Logout();
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception e)
+        {
+        }
+    }
+}

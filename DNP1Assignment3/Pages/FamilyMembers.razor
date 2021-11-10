@@ -1,0 +1,171 @@
+﻿@page "/FamilyMembers/{Id:int}"
+@using DNP1Assignment3.Data
+@using DNP1Assignment3.Models
+@inject IFamilyData FamilyData
+@inject NavigationManager NavigationManager
+
+@if (familyMembersToShow == null)
+{
+    <em>Family members not found!!!</em>
+}
+else
+{
+    <br/>
+    <div class="TableBox">
+        <table class="table">
+            <thead>
+            <tr>
+                <AuthorizeView>
+                    <Authorized>
+                        <th>Person ID</th>
+                    </Authorized>
+                </AuthorizeView>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Age</th>
+                <th>Job Title</th>
+                <th>Salary</th>
+                <th>Sex</th>
+                <th>Weight</th>
+                <th>Height</th>
+                <th>Hair Color</th>
+                <th>Eye Color</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var adult in adults)
+            {
+                <tr>
+                    <AuthorizeView>
+                        <Authorized>
+                            <td>@adult.Id</td>
+                        </Authorized>
+                    </AuthorizeView>
+                    <td>@adult.FirstName</td>
+                    <td>@adult.LastName</td>
+                    <td>@adult.Age</td>
+                    <td>@adult.JobTitle.JobTitle</td>
+                    <td>@adult.JobTitle.Salary</td>
+                    <td>@adult.Sex</td>
+                    <td>@adult.Weight</td>
+                    <td>@adult.Height</td>
+                    <td>@adult.HairColor</td>
+                    <td>@adult.EyeColor</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    <br/>
+    <h3 style="color: white">Children</h3>
+    <br/>
+    <div class="TableBox">
+        <table class="table">
+            <thead>
+            <tr>
+                <AuthorizeView>
+                    <Authorized>
+                        <th>Person ID</th>
+                    </Authorized>
+                </AuthorizeView>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Age</th>
+                <th>Sex</th>
+                <th>Weight</th>
+                <th>Height</th>
+                <th>Hair Color</th>
+                <th>Eye Color</th>
+                <th>Type of Intrests</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var child in children)
+            {
+                <tr>
+                    <AuthorizeView>
+                        <Authorized>
+                            <td>@child.Id</td>
+                        </Authorized>
+                    </AuthorizeView>
+                    <td>@child.FirstName</td>
+                    <td>@child.LastName</td>
+                    <td>@child.Age</td>
+                    <td>@child.Sex</td>
+                    <td>@child.Weight</td>
+                    <td>@child.Height</td>
+                    <td>@child.HairColor</td>
+                    <td>@child.EyeColor</td>
+                    @foreach (var intr in interests)
+                    {
+                        <tr>
+                            <td>@intr.Type</td>
+                            <td>@intr.Description</td>
+                        </tr>
+                    }
+                </tr>               
+            }
+            </tbody>
+        </table>
+    </div>
+    <br/>
+    <h3 style="color:white;">Pets</h3>
+    <br/>
+    <div class="TableBox">
+        <table class="table">
+            <thead>
+            <AuthorizeView>
+                <Authorized>
+                    <th>Pet Id</th>
+                </Authorized>
+            </AuthorizeView>
+            <th>Species</th>
+            <th>Name</th>
+            <th>Age</th>
+            </thead>
+            <tbody>
+            <tr>
+                @foreach (var p in pets)
+                {
+                    <AuthorizeView>
+                        <Authorized>
+                            <td>@p.Id</td>
+                        </Authorized>
+                    </AuthorizeView>
+                    <td>@p.Species</td>
+                    <td>@p.Name</td>
+                    <td>@p.Age</td>
+                }
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    
+}
+
+@code 
+{
+    [Parameter]
+    public int Id { get; set; }
+
+    private IList<Adult> adults { get; set; }
+    private IList<Child> children { get; set; }
+    private IList<Pet> pets { get; set; }
+    private IList<Interest> interests { get; set; }
+
+    private Family familyMembersToShow;
+
+    protected override async Task OnInitializedAsync()
+    {
+        familyMembersToShow = await FamilyData.Get(Id);
+        adults = familyMembersToShow.Adults;
+        children = familyMembersToShow.Children;
+        pets = familyMembersToShow.Pets;
+    @foreach (var  c in children)
+    {
+        interests = c.Interests;
+        pets = c.Pets;
+    }
+    }
+}

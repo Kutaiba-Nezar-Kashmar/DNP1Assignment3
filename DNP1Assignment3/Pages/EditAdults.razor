@@ -1,0 +1,81 @@
+﻿@page "/Edit/{Id:int}"
+@using DNP1Assignment3.Data
+@using DNP1Assignment3.Models
+@using Microsoft.AspNetCore.Components
+@inject IAdultData AdultData
+@inject NavigationManager NavigationManager
+
+<AuthorizeView>
+    <NotAuthorized Context="Auth">
+        <h3>You have to <a href="Login">login</a> in order to view this page!!!</h3>
+    </NotAuthorized>
+    <Authorized Context="Auth">
+        <h3 class="WelcomeMessageCreate">Edit adult with id: @Id</h3>
+
+        @if (adultToEdit == null)
+        {
+            <em>Adult is not found!!!</em>
+        }
+        else
+        {
+            <div class="editAdultBox">
+                <div class="addBox">
+                    <form class="formDis">
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <p class="labels">ID:</p>
+                                    <p class="labels">First Name:</p>
+                                    <p class="labels">Last Name:</p>
+                                    <p class="labels">Hair Color:</p>
+                                    <p class="labels">Eye Color:</p>
+                                    <p class="labels">Age:</p>
+                                    <p class="labels">Weight:</p>
+                                    <p class="labels">Height:</p>
+                                    <p class="labels">Gender:</p>
+                                    <p class="labels">Job Title:</p>
+                                    <p class="labels">Salary:</p>
+                                </div>
+                                <div class="col-md-9">
+                                    <input class="inputField" type="number" placeholder="ID" @bind-value="adultToEdit.Id"/>
+                                    <input class="inputField" type="text" placeholder="First Name" @bind-value="adultToEdit.FirstName"/>
+                                    <input class="inputField" type="text" placeholder="Last Name" @bind-value="adultToEdit.LastName"/>
+                                    <input class="inputField" type="text" placeholder="Hair Color" @bind-value="adultToEdit.HairColor"/>
+                                    <input class="inputField" type="text" placeholder="Eye Color" @bind-value="adultToEdit.EyeColor"/>
+                                    <input class="inputField" type="number" placeholder="Age" @bind-value="adultToEdit.Age"/>
+                                    <input class="inputField" type="number" placeholder="Weight" step="any" @bind-value="adultToEdit.Weight"/>
+                                    <input class="inputField" type="number" placeholder="Height" step="any" @bind-value="adultToEdit.Height"/>
+                                    <input class="inputField" type="text" placeholder="Sex" @bind-value="adultToEdit.Sex"/>
+                                    <input class="inputField" type="text" placeholder="Job Title" @bind-value="adultToEdit.JobTitle.JobTitle"/>
+                                    <input class="inputField" type="number" placeholder="Salary" @bind-value="adultToEdit.JobTitle.Salary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="d-flex justify-content-center AddFBu">
+                    <a class="submit" type="submit" @onclick="Save">Save Changes</a>
+                </div>
+            </div>
+        }
+    </Authorized>
+</AuthorizeView>
+
+@code 
+{
+    [Parameter]
+    public int Id { get; set; }
+
+    private Adult adultToEdit;
+
+    protected override async Task OnInitializedAsync()
+    {
+        adultToEdit = await AdultData.Get(Id);
+    }
+
+    private async Task Save()
+    {
+        await AdultData.UpdateAdult(adultToEdit);
+        NavigationManager.NavigateTo("/Adults");
+    }
+}

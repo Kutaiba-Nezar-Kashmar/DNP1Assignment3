@@ -1,0 +1,133 @@
+﻿@page "/AddFamily"
+@using DNP1Assignment3.Data
+@using DNP1Assignment3.Models
+@using Microsoft.AspNetCore.Components
+@inject IFamilyData FamilyData
+@inject NavigationManager NavigationManager
+
+<AuthorizeView>
+    <NotAuthorized Context="Auth">
+        <h3>You have to <a href="Login">login</a> in order to view this page!!!</h3>
+    </NotAuthorized>
+    <Authorized Context="Auth">
+        <div class="familyBox">
+            <br/>
+            <p class="WelcomeMessageCreate">New Family</p>
+            <div class="addBox">
+                <form class="formDis">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <p class="labels">Street Name:</p>
+                            <p class="labels">House Number:</p>
+                        </div>
+                        <div class="col-md-9">
+                            <input class="inputField" type="text" placeholder="Street Name" @bind-value="@newFamily.StreetName"/>
+                            <input class="inputField" type="number" placeholder="House number" @bind-value="@newFamily.HouseNumber"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="familyBox">
+            <br/>
+            <p class="WelcomeMessageCreate">New Family Adult</p>
+            <div class="addBox">
+                <form class="formDis">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <p class="labels">Adult Id:</p>
+                            <p class="labels">First Name:</p>
+                            <p class="labels">Last Name:</p>
+                            <p class="labels">Age:</p>
+                            <p class="labels">Sex:</p>
+                            <p class="labels">Weight:</p>
+                            <p class="labels">Height:</p>
+                            <p class="labels">Hair Color:</p>
+                            <p class="labels">Eye Color:</p>
+                            <p class="labels">Job Title:</p>
+                            <p class="labels">Salary:</p>
+                        </div>
+                        <div class="col-md-9">
+                            <input class="inputField" type="number" placeholder="Adult Id" @bind-value="newAdult.Id"/>
+                            <input class="inputField" type="text" placeholder="First Name" @bind-value="newAdult.FirstName"/>
+                            <input class="inputField" type="text" placeholder="Last Name" @bind-value="newAdult.LastName"/>
+                            <input class="inputField" type="number" placeholder="Age" @bind-value="newAdult.Age"/>
+                            <input class="inputField" type="text" placeholder="Sex" @bind-value="newAdult.Sex"/>
+                            <input class="inputField" type="number" placeholder="Weight" @bind-value="newAdult.Weight"/>
+                            <input class="inputField" type="number" placeholder="Height" @bind-value="newAdult.Height"/>
+                            <input class="inputField" type="text" placeholder="Hair Color" @bind-value="newAdult.HairColor"/>
+                            <input class="inputField" type="text" placeholder="Eye Color" @bind-value="newAdult.EyeColor"/>
+                            <input class="inputField" type="text" placeholder="Job Title" @bind-value="newAdult.JobTitle.JobTitle"/>
+                            <input class="inputField" type="number" placeholder="Salary" @bind-value="newAdult.JobTitle.Salary"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="familyBox">
+            <br/>
+            <p class="WelcomeMessageCreate">New Family Child And Pet</p>
+            <div class="addBox">
+                <form class="formDis">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <p class="labels">Child Id:</p>
+                            <p class="labels">First Name:</p>
+                            <p class="labels">Last Name:</p>
+                            <p class="labels">Age:</p>
+                            <p class="labels">Sex:</p>
+                            <p class="labels">Weight:</p>
+                            <p class="labels">Height:</p>
+                            <p class="labels">Hair Color:</p>
+                            <p class="labels">Interest type:</p>
+                            <p class="labels">Interest Description:</p>
+                            <p class="labels">Pet Id:</p>
+                            <p class="labels">Species:</p>
+                            <p class="labels">Pet name:</p>
+                            <p class="labels">Pet age:</p>
+                        </div>
+                        <div class="col-md-9">
+                            <input class="inputField" type="number" placeholder="Child Id" @bind-value="newChild.Id"/>
+                            <input class="inputField" type="text" placeholder="First Name" @bind-value="newChild.FirstName"/>
+                            <input class="inputField" type="text" placeholder="Last Name" @bind-value="newChild.LastName"/>
+                            <input class="inputField" type="number" placeholder="Age" @bind-value="newChild.Age"/>
+                            <input class="inputField" type="text" placeholder="Sex" @bind-value="newChild.Sex"/>
+                            <input class="inputField" type="number" placeholder="Weight" @bind-value="newChild.Weight"/>
+                            <input class="inputField" type="number" placeholder="Height" @bind-value="newChild.Height"/>
+                            <input class="inputField" type="text" placeholder="Hair Color" @bind-value="newChild.HairColor"/>
+                            <input class="inputField" type="text" placeholder="Interest type" @bind-value="newInterest.Type"/>
+                            <input class="inputField" type="text" placeholder="Interest Description" @bind-value="newInterest.Description"/>
+                            <input class="inputField" type="number" placeholder="Pet Id" @bind-value="newPet.Id"/>
+                            <input class="inputField" type="text" placeholder="Species" @bind-value="newPet.Species"/>
+                            <input class="inputField" type="text" placeholder="Pet name" @bind-value="newPet.Name"/>
+                            <input class="inputField" type="number" placeholder="Pet age" @bind-value="newPet.Age"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <br/>
+            <div class="d-flex justify-content-center AddFBu">
+                <a class="submit" type="submit" @onclick="AddNewFamily">Add Family</a>
+            </div>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+@code 
+{
+    private Adult newAdult = new Adult() {JobTitle = new Job()};
+    private Pet newPet = new Pet();
+    private Interest newInterest = new Interest();
+    private Child newChild = new Child() {Interests = new List<Interest>(), Pets = new List<Pet>()};
+    private Family newFamily = new Family() {Adults = new List<Adult>(), Children = new List<Child>(), Pets = new List<Pet>()};
+    
+    private async Task AddNewFamily()
+    {
+        newFamily.Adults.Add(newAdult);
+        newChild.Interests.Add(newInterest);
+        newChild.Pets.Add(newPet);
+        newFamily.Children.Add(newChild);
+        await FamilyData.AddFamily(newFamily);
+        NavigationManager.NavigateTo("/Family");
+    }
+}
