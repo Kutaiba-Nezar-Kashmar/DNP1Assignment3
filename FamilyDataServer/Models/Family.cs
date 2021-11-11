@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FamilyDataServer.Models
 {
     public class Family
     {
+        [Key]
         public int Id { get; set; }
         public string StreetName { get; set; }
         public int HouseNumber{ get; set; }
