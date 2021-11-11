@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FamilyDataServer.Data;
+using FamilyDataServer.Data.Impl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,6 +33,9 @@ namespace FamilyDataServer
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "FamilyDataServer", Version = "v1"});
             });
+            services.AddScoped<IAdultData, AdultData>();
+            services.AddScoped<IFamilyData, FamilyData>();
+            services.AddScoped<IUserData, UserData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -40,7 +40,7 @@
         errorMessage = "";
         try
         {
-            await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateLogin(userName, password);
+           await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateLogin(userName, password);
             NavigationManager.NavigateTo("/Adults");
             userName = "";
             password = "";

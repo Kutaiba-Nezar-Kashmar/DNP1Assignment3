@@ -90,6 +90,18 @@ using DNP1Assignment3.Shared;
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 5 "C:\Users\kkash\RiderProjects\DNP1Assignment3\DNP1Assignment3\Pages\Index.razor"
+ 
+    protected override async Task OnInitializedAsync()
+    {
+        NavigationManager.NavigateTo("/Login");
+    }
+
+#line default
+#line hidden
+#nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
     }
 }
 #pragma warning restore 1591
