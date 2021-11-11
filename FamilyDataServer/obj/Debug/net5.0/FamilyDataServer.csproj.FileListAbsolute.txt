@@ -26,8 +26,6 @@ C:\Users\kkash\RiderProjects\DNP1Assignment3\FamilyDataServer\obj\Debug\net5.0\F
 C:\Users\kkash\RiderProjects\DNP1Assignment3\FamilyDataServer\obj\Debug\net5.0\ref\FamilyDataServer.dll
 C:\Users\kkash\RiderProjects\DNP1Assignment3\FamilyDataServer\obj\Debug\net5.0\FamilyDataServer.pdb
 C:\Users\kkash\RiderProjects\DNP1Assignment3\FamilyDataServer\obj\Debug\net5.0\FamilyDataServer.genruntimeconfig.cache
-C:\Users\kkash\RiderProjects\DNP1Assignment3\FamilyDataServer\bin\Debug\net5.0\adults.json
-C:\Users\kkash\RiderProjects\DNP1Assignment3\FamilyDataServer\bin\Debug\net5.0\families.json
 C:\Users\kkash\RiderProjects\DNP1Assignment3\FamilyDataServer\bin\Debug\net5.0\users.json
 C:\Users\kkash\RiderProjects\DNP1Assignment3\FamilyDataServer\bin\Debug\net5.0\Humanizer.dll
 C:\Users\kkash\RiderProjects\DNP1Assignment3\FamilyDataServer\bin\Debug\net5.0\Microsoft.Data.Sqlite.dll

@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FamilyDataServer.DataAccess;
+using FamilyDataServer.DataAccess.DataService;
+using FamilyDataServer.DataAccess.DataService.Impl;
 using FamilyDataServer.Models;
 
 namespace FamilyDataServer.Data.Impl
 {
     public class AdultData : IAdultData
     {
-        private AdultDataService dataService;
+        private IAdultService dataService;
         private FamilyDBContext familyDbContext;
         public AdultData()
         {

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FamilyDataServer.DataAccess;
 using FamilyDataServer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace FamilyDataServer.Data.Impl
+namespace FamilyDataServer.DataAccess.DataService.Impl
 {
-    public class AdultDataService
+    public class AdultDataService : IAdultService
     {
         private FamilyDBContext context;
 
@@ -43,7 +42,7 @@ namespace FamilyDataServer.Data.Impl
         {
             try
             {
-                Adult adultToUpdate = await context.Adults.Include(adult1 => adult1.JobTitle).FirstAsync(a => a.Id == adult.Id);
+                Adult adultToUpdate = await context.Adults.Include(a => a.JobTitle).FirstAsync(a => a.Id == adult.Id);
                 adultToUpdate.FirstName = adult.FirstName;
                 adultToUpdate.LastName = adult.LastName;
                 adultToUpdate.HairColor = adult.HairColor;
