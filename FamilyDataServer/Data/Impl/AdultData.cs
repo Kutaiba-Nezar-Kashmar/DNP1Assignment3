@@ -1,83 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using FamilyDataServer.DataAccess;
 using FamilyDataServer.Models;
 
 namespace FamilyDataServer.Data.Impl
 {
     public class AdultData : IAdultData
     {
-        private string adultFile = "adults.json";
-        private IList<Adult> adults;
-
+        private AdultDataService dataService;
+        private FamilyDBContext familyDbContext;
         public AdultData()
         {
-            if (!File.Exists(adultFile))
-            {
-                writeToJson();
-            }
-            else
-            {
-                string content = File.ReadAllText(adultFile);
-                adults = JsonSerializer.Deserialize<List<Adult>>(content);
-            }
+            familyDbContext = new FamilyDBContext();
+            dataService = new AdultDataService(familyDbContext);
         }
 
         public async Task<IList<Adult>> GetAdults()
         {
-            List<Adult> al = new List<Adult>(adults);
-            return al;
+            return await dataService.GetAdults();
         }
 
         public async Task<Adult> AddAdult(Adult adult)
         {
-            int max = adults.Max(adult => adult.Id);
-            adult.Id = (++max);
-            adults.Add(adult);
-            writeToJson();
-            return adult;
+            return await dataService.AddAdult(adult);
         }
 
         public async Task RemoveAdult(int adultId)
         {
-            Adult adultToRemove = adults.First(a => a.Id == adultId);
-            adults.Remove(adultToRemove);
-            writeToJson();
+            await dataService.RemoveAdult(adultId);
         }
 
         public async Task<Adult> UpdateAdult(Adult adult)
         {
-            Adult toUpdate = adults.FirstOrDefault(a => a.Id == adult.Id);
-            if (toUpdate == null)
-            {
-                throw new Exception($"Did not find Adult with id: {adult.Id}");
-            }
-            toUpdate.FirstName = adult.FirstName;
-            toUpdate.LastName = adult.LastName;
-            toUpdate.HairColor = adult.HairColor;
-            toUpdate.EyeColor = adult.EyeColor;
-            toUpdate.Age = adult.Age;
-            toUpdate.Weight = adult.Weight;
-            toUpdate.Height = adult.Height;
-            toUpdate.Sex = adult.Sex;
-            toUpdate.JobTitle.JobTitle = adult.JobTitle.JobTitle;
-            toUpdate.JobTitle.Salary = adult.JobTitle.Salary;
-            writeToJson();
-            return adult;
+            return await dataService.UpdateAdult(adult);
         }
 
         public async Task<Adult> Get(int adultId)
         {
-            return adults.FirstOrDefault(a => a.Id == adultId);
-        }
-        
-        private void writeToJson()
-        {
-            string adultsAsJson = JsonSerializer.Serialize(adults);
-            File.WriteAllText(adultFile, adultsAsJson);
+            return await dataService.Get(adultId);
         }
     }
 }
