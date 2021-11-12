@@ -6,6 +6,7 @@ namespace FamilyDataServer.Models
     {
         [Key]
         public int Id { get; set; }
+        [Required]
         public string Species { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }

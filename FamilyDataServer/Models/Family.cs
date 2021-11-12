@@ -7,7 +7,9 @@ namespace FamilyDataServer.Models
     {
         [Key]
         public int Id { get; set; }
+        [Required]
         public string StreetName { get; set; }
+        [Required]
         public int HouseNumber{ get; set; }
         public IList<Adult> Adults { get; set; }
         public IList<Child> Children{ get; set; }
