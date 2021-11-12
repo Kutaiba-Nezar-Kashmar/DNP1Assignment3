@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FamilyDataServer.Models;
 using Microsoft.EntityFrameworkCore;
@@ -18,8 +19,14 @@ namespace FamilyDataServer.DataAccess.DataService.Impl
 
         public async Task<IList<Family>> GetFamilies()
         {
-            return await context.Families.Include(family => family.Adults).Include(family => family.Children)
-                .Include(family => family.Pets).ToListAsync();
+            return await context.Families.Include(family => family.Adults).
+                ThenInclude(adult => adult.JobTitle).
+                Include(family => family.Children).
+                ThenInclude(child => child.Pets).
+                Include(family => family.Children).
+                ThenInclude(child => child.Interests)
+                .Include(family => family.Pets).
+                ToListAsync();
         }
 
         public async Task<Family> AddFamily(Family family)
@@ -43,8 +50,10 @@ namespace FamilyDataServer.DataAccess.DataService.Impl
         {
             try
             {
-                Family familyToUpdate = await context.Families.Include(f => f.Adults)
-                    .Include(f => f.Children).Include(f => f.Pets)
+                Family familyToUpdate = await context.Families.
+                    Include(f => f.Adults)
+                    .Include(f => f.Children).
+                    Include(f => f.Pets)
                     .FirstAsync(f => f.Id == family.Id);
                 familyToUpdate.StreetName = family.StreetName;
                 familyToUpdate.HouseNumber = family.HouseNumber;
@@ -63,7 +72,12 @@ namespace FamilyDataServer.DataAccess.DataService.Impl
 
         public async Task<Family> Get(int familyId)
         {
-            return await context.Families.Include(f => f.Adults).Include(f => f.Children).Include(f => f.Pets)
+            return await context.Families.Include(f => f.Adults).
+                ThenInclude(adult => adult.JobTitle).
+                Include(f => f.Children).
+                ThenInclude(child => child.Pets).Include(family => family.Children).
+                ThenInclude(child => child.Interests).
+                Include(f => f.Pets)
                 .FirstOrDefaultAsync(f => f.Id == familyId);
         }
     }
