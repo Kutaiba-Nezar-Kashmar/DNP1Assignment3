@@ -19,13 +19,13 @@ namespace FamilyDataServer.DataAccess.DataService.Impl
 
         public async Task<IList<Family>> GetFamilies()
         {
-            return await context.Families.Include(family => family.Adults).
-                ThenInclude(adult => adult.JobTitle).
-                Include(family => family.Children).
-                ThenInclude(child => child.Pets).
-                Include(family => family.Children).
-                ThenInclude(child => child.Interests)
-                .Include(family => family.Pets).
+            return await context.Families.Include(f => f.Adults).
+                ThenInclude(a => a.JobTitle).
+                Include(f => f.Children).
+                ThenInclude(c => c.Pets).
+                Include(f => f.Children).
+                ThenInclude(c => c.Interests)
+                .Include(f => f.Pets).
                 ToListAsync();
         }
 
@@ -38,7 +38,7 @@ namespace FamilyDataServer.DataAccess.DataService.Impl
 
         public async Task RemoveFamily(int familyId)
         {
-            Family familyToRemove = await context.Families.FirstOrDefaultAsync(family => family.Id == familyId);
+            Family familyToRemove = await context.Families.FirstOrDefaultAsync(f => f.Id == familyId);
             if (familyToRemove != null)
             {
                 context.Families.Remove(familyToRemove);
@@ -48,35 +48,37 @@ namespace FamilyDataServer.DataAccess.DataService.Impl
 
         public async Task<Family> UpdateFamily(Family family)
         {
+            AdultDataService adultDataService = new AdultDataService(context);
             try
             {
-                Family familyToUpdate = await context.Families.
-                    Include(f => f.Adults)
-                    .Include(f => f.Children).
+                Family familyToUpdate = await context.Families.Include(f => f.Adults).
+                    ThenInclude(a => a.JobTitle).
+                    Include(f => f.Children).
+                    ThenInclude(c => c.Pets).Include(f => f.Children).
+                    ThenInclude(c => c.Interests).
                     Include(f => f.Pets)
                     .FirstAsync(f => f.Id == family.Id);
                 familyToUpdate.StreetName = family.StreetName;
                 familyToUpdate.HouseNumber = family.HouseNumber;
-                familyToUpdate.Adults = family.Adults;
-                familyToUpdate.Children = family.Children;
-                familyToUpdate.Pets = family.Pets;
                 context.Update(familyToUpdate);
                 await context.SaveChangesAsync();
                 return familyToUpdate;
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 throw new Exception($"Did not find Family with id: {family.Id}");
             }
+            
         }
 
         public async Task<Family> Get(int familyId)
         {
             return await context.Families.Include(f => f.Adults).
-                ThenInclude(adult => adult.JobTitle).
+                ThenInclude(a => a.JobTitle).
                 Include(f => f.Children).
-                ThenInclude(child => child.Pets).Include(family => family.Children).
-                ThenInclude(child => child.Interests).
+                ThenInclude(c => c.Pets).Include(f => f.Children).
+                ThenInclude(c => c.Interests).
                 Include(f => f.Pets)
                 .FirstOrDefaultAsync(f => f.Id == familyId);
         }

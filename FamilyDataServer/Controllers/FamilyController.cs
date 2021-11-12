@@ -76,6 +76,7 @@ namespace FamilyDataServer.Controllers
             try
             {
                 Family updatedFamily = await familyData.UpdateFamily(family);
+                Console.WriteLine(updatedFamily.Id);
                 return Ok(updatedFamily);
             }
             catch (Exception e)

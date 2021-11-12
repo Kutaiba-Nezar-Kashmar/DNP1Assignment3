@@ -60,7 +60,6 @@ namespace DNP1Assignment3.Data.Impl
             using HttpClient client = new HttpClient();
             string newFamily = JsonSerializer.Serialize(family);
             HttpContent content = new StringContent(newFamily, Encoding.UTF8, "application/json");
-
             HttpResponseMessage responseMessage = await client.PatchAsync($"{uri}/Family/{family.Id}", content);
             if (!responseMessage.IsSuccessStatusCode)
             {

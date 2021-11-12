@@ -15,6 +15,7 @@ namespace FamilyDataServer.DataAccess
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite(@"Data Source = C:\Users\kkash\RiderProjects\DNP1Assignment3\FamilyDataServer\Family.db");
+            optionsBuilder.EnableSensitiveDataLogging();
         }
     }
 }

@@ -111,7 +111,7 @@ using Microsoft.AspNetCore.Components;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 158 "C:\Users\kkash\RiderProjects\DNP1Assignment3\DNP1Assignment3\Pages\EditFamily.razor"
+#line 159 "C:\Users\kkash\RiderProjects\DNP1Assignment3\DNP1Assignment3\Pages\EditFamily.razor"
  
     [Parameter]
     public int Id { get; set; }
@@ -133,7 +133,7 @@ using Microsoft.AspNetCore.Components;
 #line hidden
 #nullable disable
 #nullable restore
-#line 173 "C:\Users\kkash\RiderProjects\DNP1Assignment3\DNP1Assignment3\Pages\EditFamily.razor"
+#line 174 "C:\Users\kkash\RiderProjects\DNP1Assignment3\DNP1Assignment3\Pages\EditFamily.razor"
      foreach (var  c in children)
     {
         interests = c.Interests;
@@ -144,13 +144,17 @@ using Microsoft.AspNetCore.Components;
 #line hidden
 #nullable disable
 #nullable restore
-#line 177 "C:\Users\kkash\RiderProjects\DNP1Assignment3\DNP1Assignment3\Pages\EditFamily.razor"
+#line 178 "C:\Users\kkash\RiderProjects\DNP1Assignment3\DNP1Assignment3\Pages\EditFamily.razor"
      
     }
 
     private async Task Save()
     {
         await FamilyData.UpdateFamily(familyToEdit);
+        foreach (Adult adult in adults)
+        {
+            await AdultData.UpdateAdult(adult);
+        }
         NavigationManager.NavigateTo("/Family");
     }
 
@@ -158,6 +162,7 @@ using Microsoft.AspNetCore.Components;
 #line hidden
 #nullable disable
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IAdultData AdultData { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private IFamilyData FamilyData { get; set; }
     }
 }

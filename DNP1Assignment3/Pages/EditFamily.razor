@@ -3,6 +3,7 @@
 @using DNP1Assignment3.Models
 @using Microsoft.AspNetCore.Components
 @inject IFamilyData FamilyData 
+@inject IAdultData AdultData 
 @inject NavigationManager NavigationManager
 
 <AuthorizeView>
@@ -180,6 +181,10 @@
     private async Task Save()
     {
         await FamilyData.UpdateFamily(familyToEdit);
+        foreach (Adult adult in adults)
+        {
+            await AdultData.UpdateAdult(adult);
+        }
         NavigationManager.NavigateTo("/Family");
     }
 }
